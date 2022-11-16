@@ -1,0 +1,28 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="15">
+            <item index="0" class="java.lang.String" itemvalue="spacy-transformers" />
+            <item index="1" class="java.lang.String" itemvalue="six" />
+            <item index="2" class="java.lang.String" itemvalue="retrain-db-connector" />
+            <item index="3" class="java.lang.String" itemvalue="pytest" />
+            <item index="4" class="java.lang.String" itemvalue="SQLAlchemy" />
+            <item index="5" class="java.lang.String" itemvalue="python-dotenv" />
+            <item index="6" class="java.lang.String" itemvalue="snowflake-sqlalchemy" />
+            <item index="7" class="java.lang.String" itemvalue="requests" />
+            <item index="8" class="java.lang.String" itemvalue="pandas" />
+            <item index="9" class="java.lang.String" itemvalue="spacy" />
+            <item index="10" class="java.lang.String" itemvalue="freezegun" />
+            <item index="11" class="java.lang.String" itemvalue="retrain-python-logger" />
+            <item index="12" class="java.lang.String" itemvalue="mock" />
+            <item index="13" class="java.lang.String" itemvalue="snowflake-connector-python" />
+            <item index="14" class="java.lang.String" itemvalue="sqlalchemy" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
