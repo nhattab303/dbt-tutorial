@@ -9,16 +9,16 @@
 
 {{ config(materialized='table') }}
 
-with source_data as (
-
-    select 1 as id
-    union all
-    select null as id
-
+with des_source_data as (
+    select
+        id as job_id,
+        status as status,
+        date(date_closed) as close_date
+    from {{ref('DEV_DB.EXTRACTOR_SERVICES.ALLJOBS_JOB_POSTS')}}
 )
 
 select *
-from source_data
+from des_source_data
 
 /*
     Uncomment the line below to remove records with null `id` values
