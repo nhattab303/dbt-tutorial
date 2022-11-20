@@ -2,20 +2,29 @@
 version: 2
 
 models:
-    - name: my_first_dbt_model
-      description: "A starter dbt model"
+    - name: desjpposts
+      description: "data extractor services job posts table"
       columns:
-          - name: id
+          - name: job_id
             description: "The primary key for this table"
             tests:
                 - unique
                 - not_null
 
-    - name: my_second_dbt_model
+    - name: odsalljobs
       description: "A starter dbt model"
       columns:
-          - name: id
+          - name: job_id
             description: "The primary key for this table"
             tests:
                 - unique
                 - not_null
+
+    - name: mergedodsdes
+      description: "merged ods and data extractor services tables"
+      columns:
+        - name: job_id
+          description: "The primary key for this table"
+          tests:
+            - unique
+            - not_null

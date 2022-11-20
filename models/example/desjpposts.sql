@@ -7,14 +7,15 @@
     Try changing "table" to "view" below
 */
 
-{{ config(materialized='table') }}
+--{{ config(materialized='table') }}
+{{ config(materialized='table', schema='EXTRACTOR_SERVICES')}}
 
 with des_source_data as (
     select
-        id as job_id,
+        to_varchar(id) as job_id,
         status as status,
-        date(date_closed) as close_date
-    from {{ref('DEV_DB.EXTRACTOR_SERVICES.ALLJOBS_JOB_POSTS')}}
+        date(close_date) as close_date
+    from {{source('des_job_posts','ALLJOBS_JOB_POSTS')}}
 )
 
 select *
