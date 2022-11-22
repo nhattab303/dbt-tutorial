@@ -1,4 +1,5 @@
 
+{{ config(materialized='incremental', schema='EXTRACTOR_SERVICES')}}
 
 
 select *
