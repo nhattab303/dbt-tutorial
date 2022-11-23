@@ -21,6 +21,7 @@ with des_source_data as (
 select *
 from des_source_data
 
+
 /*
     Uncomment the line below to remove records with null `id` values
 */
