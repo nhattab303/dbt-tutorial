@@ -1,29 +1,26 @@
 
-/*
-    Welcome to your first dbt model!
-    Did you know that you can also configure models directly within SQL files?
-    This will override configurations stated in dbt_project.yml
-
-    Try changing "table" to "view" below
-*/
 
 --{{ config(materialized='table') }}
-{{ config(materialized='table', schema='EXTRACTOR_SERVICES')}}
+
+{{ config(materialized='incremental', schema='EXTRACTOR_SERVICES', unique_key='job_id')}}
+
 
 with des_source_data as (
     select
         to_varchar(id) as job_id,
         status as status,
-        date(close_date) as close_date
+        date(close_date) as close_date,
+        time_created as loaded_at
     from {{source('des_job_posts','ALLJOBS_JOB_POSTS')}}
+    {% if is_incremental() %}
+      where loaded_at > (select max(g.des_created_at) from {{ this }} as g)
+    {% endif %}
 )
 
-select *
+select
+    job_id as job_id,
+    status as status,
+    close_date as close_date,
+    current_timestamp() as des_created_at
 from des_source_data
-
-
-/*
-    Uncomment the line below to remove records with null `id` values
-*/
-
--- where id is not null
+--where job_id = 154815181211215
