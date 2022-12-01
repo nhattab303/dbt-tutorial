@@ -31,8 +31,17 @@ clean-targets:         # directories to be removed by `dbt clean`
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
+
+vars:
+  year: ''
+  month: ''
+  day: ''
+  bucket_des_jobposts: ' @job_posts_db.ods.data_extractor_services_stage' #all_jobs/job_posts'
+  json_ff: 'data_api_analytics_stg_db.ods.dbt_json_ff'
+
 models:
   dbt_updater:
     # Applies to all files under models/example/
     example:
       materialized: view
+
