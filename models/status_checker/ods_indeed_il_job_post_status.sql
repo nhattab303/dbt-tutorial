@@ -11,7 +11,7 @@ from(
         metadata$file_row_number as row_number,
         current_timestamp() as load_date
     from
-        {{var('bucket_datasets_stage')}}/{{'indeed/il/status'}}"/{{dates_arr[0]}}/{{dates_arr[1]}}/{{dates_arr[2]}}(
+        {{var('bucket_datasets_stage')}}/{{'indeed/il/status'}}/{{dates_arr[0]}}/{{dates_arr[1]}}/{{dates_arr[2]}}(
            file_format => {{var('json_ff')}} ,pattern=>'.*json'
         )
  );
