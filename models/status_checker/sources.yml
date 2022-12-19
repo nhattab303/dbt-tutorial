@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: ODS_INDEED_IL_JOB_POST_STATUS
+    database: "{{env_var('JOB_POSTS_DB', 'DEV_DB')}}"
+    schema: ODS
+    tables:
+      - name: ODS_INDEED_IL_STATUS
+
+  - name: ODS_ALLJOBS_JOB_POST_STATUS
+    database: "{{env_var('JOB_POSTS_DB', 'DEV_DB')}}"
+    schema: ODS
+    tables:
+      - name: ODS_ALLJOBS_JOB_POST_STATUS

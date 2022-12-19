@@ -36,12 +36,14 @@ vars:
   year: ''
   month: ''
   day: ''
-  bucket_des_jobposts: ' @job_posts_db.ods.data_extractor_services_stage' #all_jobs/job_posts'
+  bucket_datasets_stage: ' @dev_db.ods.datasets_stage'
   json_ff: 'data_api_analytics_stg_db.ods.dbt_json_ff'
 
 models:
   dbt_updater:
     # Applies to all files under models/example/
-    example:
+#    example:
+#      materialized: view
+    status_checker:
       materialized: view
 

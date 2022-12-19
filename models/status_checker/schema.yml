@@ -1,0 +1,12 @@
+
+version: 2
+
+models:
+    - name: ods_indeed_il_job_post_status
+      description: "data extractor services job posts status table"
+      columns:
+          - name: job_id
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
