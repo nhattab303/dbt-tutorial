@@ -10,10 +10,10 @@ site variable can be one of ['IL', 'UAE', 'US']
 
 {% set dates_arr=get_date_macro() %}
 
-{% set source_name='ODS_INDEED_' + var("site")|string|upper + '_JOB_POST_STATUS' %}
-{% set source_table= 'ODS_INDEED_' + var("site")|string|upper + '_JOB_POST_STATUS' %}
+--{% set source_name='ODS_INDEED_' + var("site")|string|upper + '_STATUS' %}
+{% set source_table= 'ODS_INDEED_' + var("site")|string|upper + '_STATUS_TEST1' %}
 
-copy into {{source(source_name,source_table)}}
+copy into {{ref(source_table)}}
 from(
     select
         parse_json($1):job_id as job_id,
@@ -24,6 +24,6 @@ from(
         current_timestamp() as load_date
     from
         {{var('bucket_datasets_stage')}}/{{'job_boards/indeed/'}}{{var('site')|string|lower}}{{'/status'}}/{{dates_arr[0]}}/{{dates_arr[1]}}/{{dates_arr[2]}}/(
-           file_format => {{var('json_ff')}} ,pattern=>'.*json'
+           file_format => {{var('json_ff')}} ,pattern=>'.*20230108.*json'
         )
  );

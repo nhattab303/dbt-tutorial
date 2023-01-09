@@ -1,4 +1,4 @@
-{% snapshot indeed_job_post_status %}
+{% snapshot ods_indeed_job_post_status %}
 
 {{
     config(
@@ -10,6 +10,6 @@
     )
 }}
 
-select * from {{ source('LOADED_ODS_INDEED_IL_JOB_POST_STATUS', 'ODS_INDEED_IL_JOB_POST_STATUS') }}
+select * from {{ ref('ODS_INDEED_IL_STATUS_TEST1') }}
 
 {% endsnapshot %}
