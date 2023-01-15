@@ -1,25 +1,26 @@
 -- STG
-{{ config(materialized='incremental', schema='ODS') }}
-
 {% set source_name='ODS_INDEED_STATUS' %}
 {% set source_table= 'ODS_INDEED_' + var("site")|string|upper + '_STATUS_TEST3' %}
+{% set table_alias= 'ODS_INDEED_' + var("site")|string|upper + '_STATUS_STG' %}
+
+{{ config(materialized='incremental', alias=table_alias) }}
 
 with delta_dups as
 (
     SELECT
-        DISTINCT job_id
+        DISTINCT JOB_ID
     FROM
         {{ source(source_name, source_table) }}
     WHERE load_date > (
         SELECT
-            IFNULL(max(stg_updated_at), date('1970-01-01'))
+            IFNULL(max(stg_created_at), date('1970-01-01'))
         FROM
             {{this}}
     )
 ),
 ODS AS (
     SELECT
-        job_id AS job_id,
+        JOB_ID AS JOB_ID,
         MIN(try_to_date(parse_json($1):close_date::string)) AS close_date,
         MIN(parse_json($1):creation_date) AS creation_date,
         BOOLOR_AGG(IS_CLOSED) AS IS_CLOSED,
@@ -31,5 +32,10 @@ ODS AS (
 )
 SELECT * FROM ODS
 INNER JOIN delta_dups
-    ON delta_dups.job_id=ods.job_id
+    ON DELTA_DUPS.JOB_ID=ODS.JOB_ID
+{% if is_incremental() %}
+        where
+            ODS.stg_created_at>(select max(d.stg_created_at)
+                        from {{this}} d )
+{% endif %}
 GROUP BY job_id
