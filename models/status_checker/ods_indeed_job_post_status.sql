@@ -11,24 +11,20 @@ site variable can be one of ['IL', 'UAE', 'US']
 {% set dates_arr=get_date_macro() %}
 
 {% set source_name='ODS_INDEED_STATUS' %}
-{% set source_table= 'ODS_INDEED_' + var("site")|string|upper + '_STATUS_TEST2' %}
+{% set source_table= 'ODS_INDEED_' + var("site")|string|upper + '_STATUS_TEST3' %}
 
 copy into {{source(source_name, source_table)}}
 from(
     select
         parse_json($1):job_id as job_id,
-        parse_json($1):status as status,
-        try_to_date(parse_json($1):close_date::string) as close_date,
-        try_to_date(parse_json($1):time_checked::string) as time_checked,
-        parse_json($1):time_updated as time_updated,
-        parse_json($1):creation_date as date_created,
-        parse_json($1):source as source,
         parse_json($1) as json_data,
+        parse_json($1):status='closed' as is_closed,
+        parse_json($1):source as source,
         metadata$filename as file_name,
         metadata$file_row_number as row_number,
         current_timestamp() as load_date
     from
-        {{var('bucket_datasets_stage')}}/{{'job_boards/indeed/'}}{{var('site')|string|lower}}{{'/status'}}/2023/01/11/(
+        {{var('bucket_datasets_stage')}}/{{'job_boards/indeed/'}}{{var('site')|string|lower}}{{'/status'}}/2023/01/15/(
            file_format => {{var('json_ff')}} ,pattern=>'.*json'
         )
  )

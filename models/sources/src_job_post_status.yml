@@ -5,4 +5,4 @@ sources:
     database: "{{env_var('JOB_POSTS_DB', 'DEV_DB')}}"
     schema: ODS
     tables:
-      - name: ODS_INDEED_IL_STATUS_TEST2
+      - name: ODS_INDEED_IL_STATUS_TEST3
