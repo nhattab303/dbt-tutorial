@@ -19,3 +19,22 @@ models:
             - unique
             - not_null
 
+    - name: dwh_indeed_status_updates
+      description: "loads job post status metadata to dwh"
+      columns:
+        - name: job_id
+          description: indeed job id
+          tests:
+            - unique
+            - not_null
+        - name: creation_date
+          description: creation date of the job post.
+        - name: is_closed
+          description: boolean indicates whether job post is open or closed.
+        - name: close_date
+          description: date when job post was marked as closed.
+        - name: last_checked
+          description: datetime when job post was checked by status checker.
+        - name: load_date
+          description: datetime when this record was transferred from ods to this stage.
+        - name: dwh_updated_at

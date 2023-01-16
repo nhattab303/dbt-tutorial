@@ -1,14 +1,14 @@
--- STG
-{% set source_name='ODS_INDEED_STATUS' %}
-{% set source_table= 'ODS_INDEED_' + var("site")|string|upper + '_STATUS_TEST3' %}
-{% set table_alias= 'ODS_INDEED_' + var("site")|string|upper + '_STATUS_STG' %}
+-- stg
+{% set source_name='ods_indeed_status' %}
+{% set source_table= 'ods_indeed_' + var("site")|string|lower + '_status_test3' %}
+{% set table_alias= 'ods_indeed_' + var("site")|string|lower + '_status_stg' %}
 
-{{ config(materialized='incremental', alias=table_alias) }}
+{{ config(materialized='incremental', alias=table_alias, unique_key='JOB_ID') }}
 
 with delta_dups as
 (
     SELECT
-        DISTINCT JOB_ID as JOB_ID
+        DISTINCT JOB_ID as ID
     FROM
         {{ source(source_name, source_table) }}
     WHERE load_date > (
@@ -18,24 +18,23 @@ with delta_dups as
             {{this}}
     )
 ),
-ODS AS (
-    SELECT
-        JOB_ID AS JOB_ID,
-        MIN(try_to_date(parse_json($1):close_date::string)) AS close_date,
-        MIN(parse_json($1):creation_date) AS creation_date,
-        BOOLOR_AGG(IS_CLOSED) AS IS_CLOSED,
-        MAX(try_to_date(parse_json($1):time_checked::string)) AS time_checked,
-        MAX(load_date) AS load_date,
-        current_timestamp() AS stg_created_at
-    FROM
-        {{source(source_name, source_table)}}
-)
-SELECT * FROM ODS
-INNER JOIN delta_dups
-    ON DELTA_DUPS.JOB_ID=ODS.JOB_ID
+ODS AS (SELECT * FROM {{source(source_name, source_table)}})
+
+SELECT
+    JOB_ID AS JOB_ID,
+    MIN(TRY_TO_TIMESTAMP(parse_json(json_data):close_date::string)) AS CLOSE_DATE,
+    MIN(parse_json(json_data):creation_date) AS CREATION_DATE,
+    BOOLOR_AGG(IS_CLOSED) AS IS_CLOSED,
+    MAX(TRY_TO_TIMESTAMP(parse_json(json_data):time_checked::string)) AS LAST_CHECKED,
+    MAX(load_date) AS LOAD_DATE,
+    current_timestamp() AS STG_CREATED_AT
+FROM
+    ODS
+INNER JOIN DELTA_DUPS
+    ON DELTA_DUPS.ID=ODS.JOB_ID
 {% if is_incremental() %}
-    where
-        ODS.stg_created_at>(select max(d.stg_created_at)
-                    from {{this}} d )
+    WHERE
+        ODS.LOAD_DATE>(SELECT IFNULL(MAX(d.STG_CREATED_AT), date('1970-01-01'))
+                    FROM {{this}} d )
 {% endif %}
 GROUP BY JOB_ID
