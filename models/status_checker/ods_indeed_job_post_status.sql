@@ -10,8 +10,8 @@ site variable can be one of ['IL', 'UAE', 'US']
 
 {% set dates_arr=get_date_macro() %}
 
-{% set source_name='ODS_INDEED_STATUS' %}
-{% set source_table= 'ODS_INDEED_' + var("site")|string|upper + '_STATUS_TEST3' %}
+{% set source_name='ods_indeed_status' %}
+{% set source_table= 'ods_indeed_' + var("site")|string|lower + '_status_test3' %}
 
 copy into {{source(source_name, source_table)}}
 from(

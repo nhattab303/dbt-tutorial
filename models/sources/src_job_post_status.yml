@@ -1,11 +1,11 @@
 version: 2
 
 sources:
-  - name: ODS_INDEED_STATUS
+  - name: ods_indeed_status
     database: "{{env_var('JOB_POSTS_DB', 'DEV_DB')}}"
-    schema: ODS
+    schema: ods
     tables:
-      - name: ODS_INDEED_IL_STATUS_TEST3
+      - name: ods_indeed_il_status_test3
 
   - name: ods_job_post_status_updates_stg
     database: "{{env_var('JOB_POSTS_DB', 'DEV_DB')}}"
