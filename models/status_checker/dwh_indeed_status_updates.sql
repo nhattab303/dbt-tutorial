@@ -31,6 +31,6 @@ from
     indeed_status_updates
 {% if is_incremental() %}
     where
-        indeed_status_updates.stg_created_at>(select ifnull(max(d.load_date), date('1970-01-01'))
+        indeed_status_updates.stg_created_at>(select ifnull(max(d.dwh_updated_at), date('1970-01-01'))
                     from {{this}} d )
 {% endif %}
