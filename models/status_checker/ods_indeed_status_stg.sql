@@ -8,7 +8,7 @@
 with delta_dups as
 (
     SELECT
-        DISTINCT JOB_ID
+        DISTINCT JOB_ID as JOB_ID
     FROM
         {{ source(source_name, source_table) }}
     WHERE load_date > (
@@ -34,8 +34,8 @@ SELECT * FROM ODS
 INNER JOIN delta_dups
     ON DELTA_DUPS.JOB_ID=ODS.JOB_ID
 {% if is_incremental() %}
-        where
-            ODS.stg_created_at>(select max(d.stg_created_at)
-                        from {{this}} d )
+    where
+        ODS.stg_created_at>(select max(d.stg_created_at)
+                    from {{this}} d )
 {% endif %}
-GROUP BY job_id
+GROUP BY JOB_ID

@@ -24,7 +24,7 @@ from(
         metadata$file_row_number as row_number,
         current_timestamp() as load_date
     from
-        {{var('bucket_datasets_stage')}}/{{'job_boards/indeed/'}}{{var('site')|string|lower}}{{'/status'}}/2023/01/15/(
+        {{var('bucket_datasets_stage')}}/{{'job_boards/indeed/'}}{{var('site')|string|lower}}{{'/status'}}/2023/01/16/(
            file_format => {{var('json_ff')}} ,pattern=>'.*json'
         )
  )

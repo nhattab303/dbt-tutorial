@@ -10,3 +10,12 @@ models:
             tests:
                 - unique
                 - not_null
+
+    - name: ods_indeed_status_stg
+      description: "Staging step before loading data to DWH of status"
+      columns:
+        - name: job_id
+          tests:
+            - unique
+            - not_null
+
