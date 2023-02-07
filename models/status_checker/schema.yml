@@ -1,40 +1,67 @@
-
 version: 2
 
 models:
-    - name: ods_indeed_job_post_status
-      description: "data extractor services job posts status table"
-      columns:
-          - name: job_id
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
+  - name: ods_indeed_status_updates
+    description: "Loads extractor and status checker status files from GCS to ODS_INDEED_<SITE>_JOB_POST_STATUS_UPDATES table"
+    columns:
+      - name: job_id
+        description: indeed job id
+        tests:
+          - not_null
+      - name: json_data
+        description: job post data in json format
+        tests:
+          - not_null
+      - name: source
+        description: service or process that generated this record (extractor or status_checker).
+      - name: file_name
+        description: file name this job was taken from in gcs
+      - name: row_number
+        description: loading order from gcs file
+      - name: load_date
+        description: datetime when this record was loaded from gcs to the db.
+        tests:
+          - not_null
 
-    - name: ods_indeed_status_stg
-      description: "Staging step before loading data to DWH of status"
-      columns:
-        - name: job_id
-          tests:
-            - unique
-            - not_null
+  - name: stg_indeed_status_updates
+    description: "A staging for indeed status updates maintaining status and last check date."
+    columns:
+      - name: job_id
+        description: indeed job id
+        tests:
+          - unique
+          - not_null
+      - name: created_date
+        description: creation date of the job post.
+      - name: is_closed
+        description: boolean indicates whether job post is open or closed.
+      - name: close_date
+        description: date when job post was marked as closed.
+      - name: last_checked
+        description: datetime when job post was checked by status checker.
+      - name: load_date
+        description: datetime when this record was transferred from ods to this stage.
+        tests:
+          - not_null
+      - name: stg_updated_at
 
-    - name: dwh_indeed_status_updates
-      description: "loads job post status metadata to dwh"
-      columns:
-        - name: job_id
-          description: indeed job id
-          tests:
-            - unique
-            - not_null
-        - name: creation_date
-          description: creation date of the job post.
-        - name: is_closed
-          description: boolean indicates whether job post is open or closed.
-        - name: close_date
-          description: date when job post was marked as closed.
-        - name: last_checked
-          description: datetime when job post was checked by status checker.
-        - name: load_date
-          description: datetime when this record was transferred from ods to this stage.
-        - name: dwh_updated_at
+  - name: dwh_indeed_status_updates
+    description: "loads job post status metadata to dwh"
+    columns:
+      - name: job_id
+        description: indeed job id
+        tests:
+          - unique
+          - not_null
+      - name: created_date
+        description: creation date of the job post.
+      - name: status
+        description: job post status whether it's open or closed.
+      - name: close_date
+        description: date when job post was marked as closed.
+      - name: last_checked
+        description: datetime when job post was checked by status checker.
+      - name: load_date
+        description: datetime when this record was transferred from ods to this stage.
+      - name: dwh_created_at
+      - name: dwh_updated_at
