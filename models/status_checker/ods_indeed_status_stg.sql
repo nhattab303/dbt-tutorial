@@ -17,23 +17,22 @@ with delta_dups as
         FROM
             {{this}}
     )
-),
-ODS AS (SELECT * FROM {{source(source_name, source_table)}})
-
+)
 SELECT
     JOB_ID AS JOB_ID,
     MIN(TRY_TO_TIMESTAMP(parse_json(json_data):close_date::string)) AS CLOSE_DATE,
     MIN(parse_json(json_data):creation_date) AS CREATION_DATE,
-    BOOLOR_AGG(IS_CLOSED) AS IS_CLOSED,
+    BOOLOR_AGG(parse_json(json_data):status='closed') AS IS_CLOSED,
     MAX(TRY_TO_TIMESTAMP(parse_json(json_data):time_checked::string)) AS LAST_CHECKED,
     MAX(load_date) AS LOAD_DATE,
     current_timestamp() AS STG_CREATED_AT
 FROM
-    ODS
+    {{source(source_name, source_table)}} ODS
 INNER JOIN DELTA_DUPS
     ON DELTA_DUPS.ID=ODS.JOB_ID
+    WHERE parse_json(json_data):status IN ('closed', 'open')
 {% if is_incremental() %}
-    WHERE
+    AND
         ODS.LOAD_DATE>(SELECT IFNULL(MAX(d.STG_CREATED_AT), date('1970-01-01'))
                     FROM {{this}} d )
 {% endif %}

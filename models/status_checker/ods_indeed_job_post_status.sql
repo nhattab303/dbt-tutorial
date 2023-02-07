@@ -18,7 +18,6 @@ from(
     select
         parse_json($1):job_id as job_id,
         parse_json($1) as json_data,
-        parse_json($1):status='closed' as is_closed,
         parse_json($1):source as source,
         metadata$filename as file_name,
         metadata$file_row_number as row_number,
