@@ -17,7 +17,19 @@ with delta_ids_cte as
         from
             {{this}}
     )
-) di
+) di,
+
+ods as
+(
+    select
+        try_to_date(json_data:close_date::string) as close_date,
+        json_data:creation_date as created_date,
+        boolor_agg(json_data:status='closed') as is_closed,
+        try_to_timestamp(json_data:time_checked::string) as last_checked,
+        load_date
+    from
+        {{ref(source_table_var)}} ods
+)
 
 select
     job_id,
