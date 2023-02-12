@@ -1,4 +1,4 @@
-{{ config(materialized='raw_sql', schema='ods')}}
+{{ config(materialized='raw_sql')}}
 
 /*
 # ODS Indeed Status Updates Loader
@@ -11,7 +11,8 @@ site variable can be one of ['IL', 'UAE', 'US']
 {% set dates_arr=get_date_macro() %}
 
 {% set source_name_var='ods_jps_status' %}
-{% set source_table_var= 'ods_indeed_' + var("site")|string|lower + '_jps_status' %}
+{% set source_table_var= 'ods_indeed_' + var("site")|string|lower + '_status_test3' %}
+
 
 copy into {{source(source_name_var, source_table_var)}}
 from(

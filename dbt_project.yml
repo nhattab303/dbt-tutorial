@@ -40,10 +40,6 @@ vars:
   json_ff: 'data_api_analytics_stg_db.ods.dbt_json_ff'
 
 models:
-#  dbt_updater:
-#    # Applies to all files under models/example/
-##    example:
-##      materialized: view
   status_checker:
     materialized: view
 
