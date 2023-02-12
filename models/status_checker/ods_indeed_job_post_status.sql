@@ -11,14 +11,14 @@ site variable can be one of ['IL', 'UAE', 'US']
 {% set dates_arr=get_date_macro() %}
 
 {% set source_name_var='ods_jps_status' %}
-{% set source_table_var= 'ods_indeed_' + var("site")|string|lower + '_status_test3' %}
+{% set source_table_var= 'ods_indeed_' + var("site")|string|lower + '_status_test6' %}
 
 
 copy into {{source(source_name_var, source_table_var)}}
 from(
     select
-        parse_json(json_data):job_id as job_id,
-        parse_json(json_data) as json_data,
+        parse_json($1) as json_data,
+        json_data:job_id as job_id,
         json_data:source as source,
         metadata$filename as file_name,
         metadata$file_row_number as row_number,

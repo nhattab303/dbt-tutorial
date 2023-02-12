@@ -4,12 +4,12 @@ models:
   - name: ods_indeed_status_updates
     description: "Loads extractor and status checker status files from GCS to ODS_INDEED_<SITE>_JOB_POST_STATUS_UPDATES table"
     columns:
-      - name: job_id
-        description: indeed job id
-        tests:
-          - not_null
       - name: json_data
         description: job post data in json format
+        tests:
+          - not_null
+      - name: job_id
+        description: indeed job id
         tests:
           - not_null
       - name: source
@@ -43,6 +43,7 @@ models:
         description: datetime when this record was transferred from ods to this stage.
         tests:
           - not_null
+      - name: stg_created_at
       - name: stg_updated_at
 
   - name: dwh_indeed_status_updates
