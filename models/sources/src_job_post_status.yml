@@ -5,19 +5,4 @@ sources:
     database: "{{env_var('JOB_POSTS_DB', 'DEV_DB')}}"
     schema: ods
     tables:
-      - name: ods_indeed_il_status_test6
-
-  - name: stg_jps_status
-    database: "{{env_var('JOB_POSTS_DB', 'DEV_DB')}}"
-    schema: stg
-    tables:
-      - name: stg_indeed_il_jps_status
-
-#  - name: ods_job_post_status_updates_stg
-#    database: "{{env_var('JOB_POSTS_DB', 'DEV_DB')}}"
-#    schema: ods
-#    tables:
-#      - name: ods_indeed_il_status_stg
-##      - name: ods_indeed_uae_job_post_status_updates_stg
-##      - name: ods_indeed_us_job_post_status_updates_stg
-##      - name: ods_alljobs_job_post_status_updates_stg
+      - name: ods_indeed_il_jps_status

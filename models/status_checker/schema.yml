@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: ods_indeed_status_updates
+  - name: ods_indeed_il_jps_status
     description: "Loads extractor and status checker status files from GCS to ODS_INDEED_<SITE>_JOB_POST_STATUS_UPDATES table"
     columns:
       - name: json_data
@@ -23,7 +23,7 @@ models:
         tests:
           - not_null
 
-  - name: stg_indeed_status_updates
+  - name: stg_indeed_il_jps_status
     description: "A staging for indeed status updates maintaining status and last check date."
     columns:
       - name: job_id
@@ -46,7 +46,7 @@ models:
       - name: stg_created_at
       - name: stg_updated_at
 
-  - name: dwh_indeed_status_updates
+  - name: dwh_indeed_il_jps_status
     description: "loads job post status metadata to dwh"
     columns:
       - name: job_id
